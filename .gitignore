@@ -2,7 +2,8 @@
 node_modules/
 
 # Ignorar arquivos de ambiente 
-.env*
+.env.noticias
+.env.boletins
 
 # Ignorar arquivos de lock do npm 
 package-lock.json
