@@ -1,0 +1,130 @@
+README - Backend de Microsserviços de Notícias e Boletins
+Bem-vindo ao repositório do Backend de Microsserviços de Notícias e Boletins. Este projeto é composto por dois microsserviços independentes: um para gerenciar Notícias e outro para gerenciar Boletins. Ambos utilizam o MongoDB como banco de dados e a API é acessada por meio de requisições HTTP.
+
+Sumário
+Visão Geral
+Requisitos
+Configuração do Ambiente
+Iniciar o Backend
+Endpoints
+Execução Separada de Microsserviços
+Notas Finais
+Visão Geral
+Este projeto é uma aplicação de backend dividida em dois microsserviços:
+
+Boletins: Permite o gerenciamento de boletins, incluindo o upload de arquivos PDF.
+Notícias: Permite o gerenciamento de notícias, incluindo o upload de imagens associadas às notícias.
+Além disso, um Proxy Reverso é configurado para integrar os dois microsserviços, permitindo que ambos rodem simultaneamente de maneira simplificada.
+
+Requisitos
+Node.js (>=16.x)
+MongoDB
+MongoDB Atlas ou banco de dados local configurado
+npm (ou yarn)
+Configuração do Ambiente
+Variáveis de Ambiente
+Existem duas variáveis de ambiente que você precisa configurar para que os microsserviços funcionem corretamente:
+
+.env.boletins: Contém as configurações específicas para o microsserviço de boletins.
+
+dotenv
+Copiar código
+MONGO_URI=<Sua URI do MongoDB>
+PORT_BOLETINS=5001
+.env.noticias: Contém as configurações específicas para o microsserviço de notícias.
+
+dotenv
+Copiar código
+MONGO_URI=<Sua URI do MongoDB>
+PORT_NOTICIAS=5000
+Certifique-se de substituir <Sua URI do MongoDB> pela URI de conexão do MongoDB de sua escolha (MongoDB local ou MongoDB Atlas).
+
+Iniciar o Backend
+Para iniciar os microsserviços, você pode usar o comando npm start, que vai rodar todos os microsserviços juntos:
+
+bash
+Copiar código
+npm start
+Comandos Separados
+Se preferir rodar os microsserviços separadamente, use os seguintes comandos:
+
+Para o Microsserviço de Boletins:
+
+bash
+Copiar código
+npm run boletins
+Para o Microsserviço de Notícias:
+
+bash
+Copiar código
+npm run noticias
+Para o Proxy Reverso (caso deseje rodar separadamente):
+
+bash
+Copiar código
+node reverseProxy.js
+Endpoints
+Boletins
+POST /api/boletins: Criar um novo boletim (com arquivo PDF).
+
+Body: { "title": "Título do boletim", "pdf": <Arquivo PDF> }
+GET /api/boletins: Listar todos os boletins.
+
+DELETE /api/boletins/
+: Deletar um boletim pelo ID (também remove o arquivo PDF).
+
+Notícias
+POST /api/noticias: Criar uma nova notícia (com ou sem imagem).
+
+Body: { "titulo": "Título", "subtitulo": "Subtítulo", "descricao": "Descrição", "autor": "Nome do Autor", "imageUrl": <Arquivo de Imagem> }
+GET /api/noticias: Listar todas as notícias.
+
+DELETE /api/noticias/
+: Deletar uma notícia pelo ID (também remove a imagem associada).
+
+Execução Separada de Microsserviços
+Microsserviço de Boletins
+Iniciar o microsserviço de boletins:
+
+Navegue até a pasta do projeto e execute:
+bash
+Copiar código
+npm run boletins
+Testar:
+
+Acesse http://localhost:5001/api/boletins para interagir com o microsserviço de boletins.
+Microsserviço de Notícias
+Iniciar o microsserviço de notícias:
+
+Navegue até a pasta do projeto e execute:
+bash
+Copiar código
+npm run noticias
+Testar:
+
+Acesse http://localhost:5000/api/noticias para interagir com o microsserviço de notícias.
+Proxy Reverso
+Para rodar ambos os microsserviços de maneira integrada:
+
+Iniciar o Proxy Reverso:
+Execute:
+bash
+Copiar código
+node reverseProxy.js
+Isso vai criar um proxy que integra os dois microsserviços. Acesse as APIs de boletins e notícias como se fossem um único serviço.
+
+Notas Finais
+Estrutura de Diretórios:
+
+backend/: Pasta principal do backend com toda a configuração de microsserviços.
+config/: Contém a configuração de conexão com o MongoDB (db.js).
+controllers/: Contém a lógica de cada microsserviço (boletins e notícias).
+models/: Define os modelos de dados (Boletins e Notícias) usando o Mongoose.
+routes/: Contém as rotas do Express para cada microsserviço.
+uploads/: Pasta onde arquivos (PDFs e imagens) são armazenados.
+Segurança:
+
+Certifique-se de que sua URI do MongoDB esteja protegida e não compartilhe o arquivo .env publicamente.
+Banco de Dados:
+
+O projeto utiliza o MongoDB e está configurado para conexão via Mongoose. Verifique se a URI do MongoDB está correta e configurada no arquivo .env.
